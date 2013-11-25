@@ -1,7 +1,7 @@
 <?php
 namespace Bootstrapper;
 
-use \HTML;
+use Illuminate\Pagination\Paginator as LaravelPaginator;
 
 /**
  * Paginator for creating Twitter Bootstrap pagination.
@@ -16,7 +16,7 @@ use \HTML;
  *
  * @see        http://twitter.github.com/bootstrap/
  */
-class Paginator extends \Laravel\Paginator
+class Paginator extends LaravelPaginator
 {
     /**
      * Paginator types
@@ -102,7 +102,7 @@ class Paginator extends \Laravel\Paginator
 
         $attributes = array("class" => "pagination".$alignment.$size);
 
-        return '<ul'.HTML::attributes($attributes).'>'.$content.'</ul>';
+        return '<ul'.Helpers::getContainer('html')->attributes($attributes).'>'.$content.'</ul>';
     }
 
 
@@ -131,9 +131,9 @@ class Paginator extends \Laravel\Paginator
         if ($disabled($this->page, $this->last)) {
             $class .= " disabled";
 
-            return '<li'.HTML::attributes(compact("class")).'><a href="#">'.HTML::entities($text).'</a></li>';
+            return '<li'.Helpers::getContainer('html')->attributes(compact("class")).'><a href="#">'.Helpers::getContainer('html')->entities($text).'</a></li>';
         } else {
-            return $this->link($page, $text, null);
+            return '<li'.Helpers::getContainer('html')->attributes(compact("class")).'>'.$this->link($page, $text, null).'</li>';
         }
     }
 
@@ -159,7 +159,7 @@ class Paginator extends \Laravel\Paginator
         // will be assigned the "current" CSS class for convenient styling.
         for ($page = $start; $page <= $end; $page++) {
             if ($this->page == $page) {
-                $pages[] = '<li class="active"><a href="#">'.HTML::entities($page).'</a></li>';
+                $pages[] = '<li class="active"><a href="#">'.Helpers::getContainer('html')->entities($page).'</a></li>';
             } else {
                 $pages[] = '<li>'.$this->link($page, $page, null).'</li>';
             }
